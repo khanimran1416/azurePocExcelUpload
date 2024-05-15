@@ -34,6 +34,14 @@ public class ExcelHelper {
 
         header.put(key,value);
     }
+
+    public static void phoneAddress(Row currentRow, Map<String, Object> phoneAddress,Map<String,Integer> headers){
+        phoneAddress.put("extensionFields",null);
+        phoneAddress.put("partyType","INDIVIDUAL");
+    }
+    private void mobilePhoneNumberDetails(Row currentRow, Map<String, Object> phoneAddress,Map<String,Integer> headers){
+        Map<String,Object> primaryPhoneAddress=new HashMap<>();
+    }
     public static void partyPrimaryInformation(Row currentRow, Map<String, Object> partyPrimaryInformation,Map<String,Integer> headers) {
 
         partyPrimaryInformation.put("partyType","INDIVIDUAL");
@@ -43,16 +51,30 @@ public class ExcelHelper {
         if (currentRow.getCell(headers.get(Constant.GENDER)).getCellType() == CellType.STRING) {
             partyPrimaryInformation.put("gender",String.valueOf(currentRow.getCell(headers.get(Constant.GENDER)).getStringCellValue()));
         }
+        if (currentRow.getCell(headers.get(Constant.MARITAL_STATUS)).getCellType() == CellType.STRING) {
+            partyPrimaryInformation.put("maritalStatus",String.valueOf(currentRow.getCell(headers.get(Constant.MARITAL_STATUS)).getStringCellValue()));
+        }
+        if (currentRow.getCell(headers.get(Constant.RESIDENT_TYPE)).getCellType() == CellType.STRING) {
+            partyPrimaryInformation.put("residentialStatus",String.valueOf(currentRow.getCell(headers.get(Constant.RESIDENT_TYPE)).getStringCellValue()));
+        }
 
-        partyPrimaryInformation.put("maritalStatus","");
-        partyPrimaryInformation.put("residentialStatus","");
         Map<String,Object> birthInformation=new HashMap<>();
-        birthInformation.put("dateOfBirth","");
-        birthInformation.put("cityOfBirth","");
-        birthInformation.put("countryOfBirth","");
+        if (currentRow.getCell(headers.get(Constant.DATE_OF_BIRTH)).getCellType() == CellType.STRING) {
+            birthInformation.put("dateOfBirth",String.valueOf(currentRow.getCell(headers.get(Constant.DATE_OF_BIRTH)).getStringCellValue()));
+        }
+        if (currentRow.getCell(headers.get(Constant.CITY_OF_BIRTH)).getCellType() == CellType.STRING) {
+            birthInformation.put("cityOfBirth",String.valueOf(currentRow.getCell(headers.get(Constant.CITY_OF_BIRTH)).getStringCellValue()));
+        }
+        if (currentRow.getCell(headers.get(Constant.COUNTRY_OF_BIRTH)).getCellType() == CellType.STRING) {
+            birthInformation.put("countryOfBirth",String.valueOf(currentRow.getCell(headers.get(Constant.COUNTRY_OF_BIRTH)).getStringCellValue()));
+        }
         partyPrimaryInformation.put("birthInformation",birthInformation);
-        partyPrimaryInformation.put("nationality","");
-        partyPrimaryInformation.put("customerSegment","");
+        if (currentRow.getCell(headers.get(Constant.NATIONALITY)).getCellType() == CellType.STRING) {
+            partyPrimaryInformation.put("nationality",String.valueOf(currentRow.getCell(headers.get(Constant.NATIONALITY)).getStringCellValue()));
+        }
+        if (currentRow.getCell(headers.get(Constant.CUSTOMER_SEGMENT)).getCellType() == CellType.STRING) {
+            partyPrimaryInformation.put("customerSegment",String.valueOf(currentRow.getCell(headers.get(Constant.CUSTOMER_SEGMENT)).getStringCellValue()));
+        }
     }
 
     private static void familyName(Row currentRow, Map<String, Object> partyPrimaryInformation,Map<String,Integer> headers) {
@@ -78,10 +100,10 @@ public class ExcelHelper {
     private static void partyName(Row currentRow, Map<String, Object> partyPrimaryInformation,Map<String,Integer> headers) {
         Map<String,Object> partyName=new HashMap<>();
         Map<String,Object> name=new HashMap<>();
-        name.put("prefix",String.valueOf(currentRow.getCell(1).getStringCellValue()));
+        name.put("prefix",String.valueOf(currentRow.getCell(headers.get(Constant.SALUTATION)).getStringCellValue()));
 
         if (currentRow.getCell(headers.get(Constant.CUSTOMER_NAME)).getCellType() == CellType.STRING) {
-            String customerName=String.valueOf(currentRow.getCell(Integer.parseInt(Constant.CUSTOMER_NAME)).getStringCellValue());
+            String customerName=currentRow.getCell(headers.get(Constant.CUSTOMER_NAME)).getStringCellValue();
             name.put("fullName", customerName);
             String[] str=customerName.split(" ");
             name.put("firstName",str[0]);

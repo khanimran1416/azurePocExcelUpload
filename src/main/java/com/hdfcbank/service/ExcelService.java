@@ -52,6 +52,7 @@ public class ExcelService {
 //                    errorList.add(e.getMessage()+ " +"+objectMap.get("partyId"));
 //                }
 //            }
+            response.put("request",requestList);
             response.put("Success",successList);
             response.put("Error",errorList);
 
@@ -70,11 +71,11 @@ public class ExcelService {
             Iterator<Row> rows = sheet.iterator();
 
             List list = new ArrayList();
-
+            Map<String,Integer> header=new HashMap<>();
             int rowNumber = 0;
             while (rows.hasNext()) {
                 Row currentRow = rows.next();
-                Map<String,Integer> header=new HashMap<>();
+
 
                 // skip header
                 if (rowNumber == 0) {
@@ -82,9 +83,8 @@ public class ExcelService {
                     for(int i=0; i<rowLength;i++){
                        header.put(currentRow.getCell(i).getStringCellValue(),i);
                     }
-
                    rowNumber++;
-//                    continue;
+                    continue;
                 }
                 Map<String,Object> request=new HashMap<>();
                 Map<String,Object> headerObject=new HashMap<>();
@@ -96,8 +96,8 @@ public class ExcelService {
                 Map<String,Object> partyPrimaryInformation=new HashMap<>();
                 partyPrimaryInformation(currentRow, partyPrimaryInformation,header);
 
-                body.put("partyprimaryInformation",partyPrimaryInformation);
-                request.put("body",body);
+                request.put("partyprimaryInformation",partyPrimaryInformation);
+                //request.put("body",body);
                 list.add(request);
             }
 
